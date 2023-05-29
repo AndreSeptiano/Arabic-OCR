@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 import cv2 as cv
 from utilities import projection, save_image
@@ -28,7 +29,7 @@ def fill(binary_img, VP):
                     # flag = 1
 
     return binary_img
-    
+
 
 def baseline_detection(word_img):
     '''Get baseline index of a given word'''

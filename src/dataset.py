@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import cv2 as cv
 import os
 import re
@@ -17,12 +18,14 @@ height = 25
 dim = (width, height)
 
 directory = {}
-chars = ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف',
-'ق','ك', 'ل', 'م', 'ن', 'ه', 'و','ي','لا']
+# chars = ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف',
+# 'ق','ك', 'ل', 'م', 'ن', 'ه', 'و','ي','لا']
+with open('pegon.txt', 'r') as f:
+    chars = f.read().split()
 
 for char in chars:
     directory[char] = 0
-    
+
 
 def check_lamAlf(word, idx):
 

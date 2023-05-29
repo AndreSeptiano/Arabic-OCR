@@ -3,6 +3,7 @@ import cv2 as cv
 import os
 import re
 import random
+import matplotlib.pyplot as plt
 from utilities import projection
 from glob import glob
 from tqdm import tqdm
@@ -15,8 +16,8 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 import pickle
 
-chars = ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف',
-'ق','ك', 'ل', 'م', 'ن', 'ه', 'و','ي','لا']
+with open('pegon.txt', 'r') as f:
+    chars = f.read().split()
 train_ratio = 0.8
 script_path = os.getcwd()
 classifiers = [ svm.LinearSVC(),
@@ -25,7 +26,7 @@ classifiers = [ svm.LinearSVC(),
                 GaussianNB()]
 
 names = ['LinearSVM', '1L_NN', '2L_NN', 'Gaussian_Naive_Bayes']
-skip = [1, 0, 1, 1]
+skip = [0, 0, 0, 0]
 
 width = 25
 height = 25
@@ -83,21 +84,23 @@ def binarize(char_img):
 def prepare_char(char_img):
 
     binary_char = binarize(char_img)
-
+    
     try:
         char_box = bound_box(binary_char)
         resized = cv.resize(char_box, dim, interpolation = cv.INTER_AREA)
+        return resized
     except:
         pass
 
-    return resized
-
 
 def featurizer(char_img):
-
-    flat_char = char_img.flatten()
-
-    return flat_char
+    try:
+        flat_char = char_img.flatten()
+        return flat_char
+    except:
+        plt.imshow(char_img)
+        plt.show()
+        raise AtributeError("'NoneType' object has no attribute 'flatten'")
 
 
 def read_data(limit=4000):
@@ -107,17 +110,20 @@ def read_data(limit=4000):
     print("For each char")
     for char in tqdm(chars, total=len(chars)):
 
-        folder = f'../Dataset/char_sample/{char}'
-        char_paths =  glob(f'../Dataset/char_sample/{char}/*.png')
+        folder = f'{directory}/{char}'
+        char_paths =  glob(f'{directory}/{char}/*.png')
 
         if os.path.exists(folder):
             os.chdir(folder)
 
             print(f'\nReading images for char {char}')
             for char_path in tqdm(char_paths[:limit], total=len(char_paths)):
-                num = re.findall(r'\d+', char_path)[0]
-                char_img = cv.imread(f'{num}.png', 0)
+#                 num = re.findall(r'\d+', char_path)[0]
+#                 char_img = cv.imread(f'{num}.png', 0)
+                char_img = cv.imread(f'{char_path}',0)
                 ready_char = prepare_char(char_img)
+                if ready_char is None:
+                    continue
                 feature_vector = featurizer(ready_char)
                 # X.append(char)
                 X.append(feature_vector)
@@ -180,9 +186,9 @@ def test(limit=3000):
     Y = []
     tot = 0
     for char in tqdm(chars, total=len(chars)):
-
-        folder = f'../Dataset/char_sample/{char}'
-        char_paths =  glob(f'../Dataset/char_sample/{char}/*.png')
+        
+        folder = f'{directory}/{char}'
+        char_paths =  glob(f'{directory}/{char}/*.png')
 
 
         if os.path.exists(folder):
@@ -191,9 +197,12 @@ def test(limit=3000):
             print(f'\nReading images for char {char}')
             tot += len(char_paths) - limit
             for char_path in tqdm(char_paths[limit:], total=len(char_paths)):
-                num = re.findall(r'\d+', char_path)[0]
-                char_img = cv.imread(f'{num}.png', 0)
+#                 num = re.findall(r'\d+', char_path)[0]
+#                 char_img = cv.imread(f'{num}.png', 0)
+                char_img = cv.imread(f'{char_path}',0)
                 ready_char = prepare_char(char_img)
+                if ready_char is None:
+                    continue
                 feature_vector = featurizer(ready_char)
                 # X.append(char)
                 X.append(feature_vector)
@@ -212,4 +221,4 @@ def test(limit=3000):
 if __name__ == "__main__":
 
     train()
-    # test()
+#     test()
