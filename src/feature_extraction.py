@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
@@ -15,7 +16,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import classification_report, confusion_matrix
 import warnings
 
-#%matplotlib inline
+# %matplotlib inline
 def whiteBlackRatio(img):
     h = img.shape[0]
     w = img.shape[1]

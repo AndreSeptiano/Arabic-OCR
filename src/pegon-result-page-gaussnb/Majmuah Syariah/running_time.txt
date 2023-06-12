@@ -1,0 +1,15 @@
+image#Cover.bmp: 24.70896315574646
+image#Image (139).bmp: 24.270513772964478
+image#Image (2).bmp: 24.83654022216797
+image#Image (3).bmp: 24.16837453842163
+image#Image (4).bmp: 24.694401741027832
+image#Image (49).bmp: 24.584311485290527
+image#Image (5).bmp: 25.34548783302307
+image#Image (61).bmp: 24.548629999160767
+image#Image (62).bmp: 24.47426414489746
+image#Image (63).bmp: 24.36258316040039
+image#Image (7).bmp: 25.083654642105103
+image#Image (8).bmp: 24.277541875839233
+image#Image (80).bmp: 24.549912929534912
+image#Image (82).bmp: 24.61616325378418
+image#Image.bmp: 24.059467554092407
