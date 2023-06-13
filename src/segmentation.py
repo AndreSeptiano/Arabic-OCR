@@ -1,8 +1,10 @@
 import numpy as np
 import cv2 as cv
+import matplotlib.pyplot as plt
 from preprocessing import binary_otsus, deskew
 from utilities import projection, save_image
 from glob import glob
+from a_star_line_segment.bbox_extract import get_bounding_boxes
 
 
 def preprocess(image):
@@ -77,9 +79,12 @@ def word_vertical_projection(line_image, cut=3):
     return line_words
 
 
+# +
 def extract_words(img, visual=0):
 
-    lines = line_horizontal_projection(img)
+    # lines = line_horizontal_projection(img)
+    lines = get_bounding_boxes(img)
+    print(f'Line shapes: {lines[0].shape}')
     words = []
     
     for idx, line in enumerate(lines):
@@ -89,11 +94,18 @@ def extract_words(img, visual=0):
 
         line_words = word_vertical_projection(line)
         for w in line_words:
-            # if len(words) == 585:
-            #     print(idx)
             words.append((w, line))
-        # words.extend(line_words)
-
+    
+#     #--------------------------
+#     # Debuggin purpose
+#     line_test = lines[5]
+#     word_test = []
+#     for w, l in words:
+#         if l == line_test:
+#             word_test.append(w)
+#     print(f'Total words captured: {len(word_test)}')
+#     #--------------------------
+    
     # breakpoint()
     if visual:
         for idx, word in enumerate(words):
@@ -101,6 +113,8 @@ def extract_words(img, visual=0):
 
     return words
 
+
+# -
 
 if __name__ == "__main__":
     

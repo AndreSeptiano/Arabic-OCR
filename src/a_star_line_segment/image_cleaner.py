@@ -3,7 +3,7 @@ import math
 import numpy as np
 
 from heapq import *
-from a_star_line_segment import *
+from .astar import *
 
 from skimage.transform import rotate
 from scipy.ndimage import binary_dilation, convolve1d
@@ -99,8 +99,7 @@ def remove_border(img, border_mask, border_thicc, background_mean):
 
 def segment_img(img):
     binarized_image = binarize_image(img)
-    hpp = horizontal_projections(binarized_image)
-
+    hpp = horizontal_projections(binarized_image) 
     _, labels, stats, centroids = cv2.connectedComponentsWithStats(binarized_image.astype(np.uint8), connectivity=8)
     areas = stats[1:,-1]
     thres = get_upper_outliers_thres(areas)
